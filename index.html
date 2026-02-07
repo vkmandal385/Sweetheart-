@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Rose Day ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family:'Comic Sans MS', cursive;
+    background:#ffeef2;
+    text-align:center;
+    overflow:hidden;
+}
+
+.page{
+    display:none;
+    height:100vh;
+    padding-top:70px;
+}
+.page.active{display:block;}
+
+h1{color:#ff2d55;}
+p{color:#555;font-size:18px;padding:0 20px;}
+
+button{
+    background:#ff2d55;
+    color:white;
+    border:none;
+    padding:14px 28px;
+    font-size:18px;
+    border-radius:30px;
+    margin-top:25px;
+    cursor:pointer;
+}
+
+.plant{
+    font-size:90px;
+    margin:40px 0;
+    animation:pop 0.6s;
+}
+
+.water{
+    font-size:42px;
+    background:#4da6ff;
+    width:70px;
+    height:70px;
+    line-height:70px;
+    border-radius:50%;
+    margin:20px auto;
+}
+
+.water:active{animation:water 0.4s;}
+
+.progress{
+    width:70%;
+    height:6px;
+    background:#ddd;
+    margin:20px auto;
+    border-radius:10px;
+}
+.bar{
+    width:0%;
+    height:100%;
+    background:#4da6ff;
+    border-radius:10px;
+}
+
+.rose{
+    font-size:130px;
+    animation:heartbeat 1.2s infinite;
+}
+
+.letter{
+    background:white;
+    width:85%;
+    margin:20px auto;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+    animation:pop 0.6s;
+}
+
+.flowers{
+    position:absolute;
+    top:-50px;
+    font-size:26px;
+    animation:fall linear infinite;
+}
+
+@keyframes pop{
+    0%{transform:scale(0.8);opacity:0;}
+    60%{transform:scale(1.1);}
+    100%{transform:scale(1);opacity:1;}
+}
+@keyframes heartbeat{
+    0%{transform:scale(1);}
+    25%{transform:scale(1.1);}
+    50%{transform:scale(1);}
+}
+@keyframes water{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.3);}
+}
+@keyframes fall{
+    to{transform:translateY(110vh) rotate(360deg);}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="love.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Page 1 -->
+<div class="page active">
+    <h1>Hey You 💖</h1>
+    <p>I found something special…</p>
+    <button onclick="playMusic(); next()">What is it?</button>
+</div>
+
+<!-- Page 2 -->
+<div class="page">
+    <h1>Plant the seed 🌱</h1>
+    <div class="plant">🪴</div>
+    <div class="water" onclick="grow()">💧</div>
+    <div class="progress"><div class="bar"></div></div>
+</div>
+
+<!-- Page 3 -->
+<div class="page">
+    <h1>It's growing 😍</h1>
+    <div class="plant">🌱</div>
+    <div class="water" onclick="grow()">💧</div>
+    <div class="progress"><div class="bar"></div></div>
+</div>
+
+<!-- Page 4 -->
+<div class="page">
+    <h1>More love, more growth 💕</h1>
+    <div class="plant">🌿</div>
+    <div class="water" onclick="grow()">💧</div>
+    <div class="progress"><div class="bar"></div></div>
+</div>
+
+<!-- Page 5 -->
+<div class="page">
+    <h1>Almost ready 🌷</h1>
+    <div class="plant">🌹</div>
+    <div class="water" onclick="next()">💧</div>
+</div>
+
+<!-- Page 6 -->
+<div class="page">
+    <h1>Happy Rose Day Sweetheart ❤️</h1>
+    <div class="rose">🌹</div>
+    <button onclick="next()">A Letter For You 💌</button>
+</div>
+
+<!-- Page 7 -->
+<div class="page">
+    <div class="letter">
+        <h1>Meri Jaan 💕</h1>
+        <p id="loveText"></p>
+        <p><b>— Your Dudu ❤️</b></p>
+        <button onclick="flowers()">One last thing</button>
+    </div>
+</div>
+
+<!-- Page 8 -->
+<div class="page">
+    <h1>This is for you sweetie 😘</h1>
+</div>
+
+<script>
+let page=0;
+let growCount=0;
+const pages=document.querySelectorAll('.page');
+
+function next(){
+    pages[page].classList.remove('active');
+    page++;
+    pages[page].classList.add('active');
+
+    if(page===6){
+        typeText(
+            document.getElementById("loveText"),
+            "Tumhare bina mera har ek moment bekar sa lagne laga hai. Subha hote hi aapki yaad aur bahut miss karna. Ab toh aap mere liye kaafi zyada matter karti ho. Din ho ya raat, I really really love you baby 😘"
+        );
+    }
+}
+
+function grow(){
+    growCount+=25;
+    let plant=document.querySelectorAll('.plant')[page-1];
+    plant.style.transform="scale(1.2)";
+    setTimeout(()=>plant.style.transform="scale(1)",200);
+
+    document.querySelectorAll('.bar')[page-1].style.width=growCount+'%';
+    if(growCount>=100){ growCount=0; next(); }
+}
+
+function typeText(el,text){
+    el.innerHTML="";
+    let i=0;
+    let interval=setInterval(()=>{
+        if(i<text.length){
+            el.innerHTML+=text.charAt(i);
+            i++;
+        }else clearInterval(interval);
+    },40);
+}
+
+function flowers(){
+    next();
+    for(let i=0;i<40;i++){
+        let f=document.createElement('div');
+        f.className='flowers';
+        f.innerText=Math.random()>0.5?'🌸':'🌹';
+        f.style.left=Math.random()*100+'%';
+        f.style.animationDuration=(3+Math.random()*3)+'s';
+        document.body.appendChild(f);
+    }
+}
+
+function playMusic(){
+    let music=document.getElementById("bgMusic");
+    music.play();
+}
+</script>
+
+</body>
+  </html>
